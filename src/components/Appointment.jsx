@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const styles = ({
     card: {
@@ -25,29 +26,37 @@ const styles = ({
 
 class Appointment extends Component {
 
+    state = {
+        startTime: '11:00',
+        endTime: '12:00',
+        status: '',
+    };
+
     render() {
-        const { classes, theme } = this.props;
+        const { classes, startTime, endTime, status, handleOpen } = this.props;
         return (
             <div>
                 <Card className={classes.card}>
-                    <Grid container direction="row" justify="space-between" alignItems="center">
-                        <Grid item className={classes.details}>
-                            <CardContent className={classes.content}>
-                                <Typography variant="h6">
-                                    10:00 -
-                            </Typography>
-                                <Typography variant="h6">
-                                    11:00
-                            </Typography>
-                            </CardContent>
+                    <CardActionArea onClick={() => handleOpen}>
+                        <Grid container direction="row" justify="space-between" alignItems="center">
+                            <Grid item className={classes.details}>
+                                <CardContent className={classes.content}>
+                                    <Typography variant="h6">
+                                        {startTime} -
+                                    </Typography>
+                                    <Typography variant="h6">
+                                        {endTime}
+                                    </Typography>
+                                </CardContent>
+                            </Grid>
+                            <Grid item className={classes.status}>
+                                <Typography variant="h5" align="center">{status}</Typography>
+                            </Grid>
+                            <Grid item className={classes.status}>
+                                <Typography variant="h5" align="center">Edit</Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item classname={classes.status}>
-                            <Typography variant="h5" align="center">Available</Typography>
-                        </Grid>
-                        <Grid item classname={classes.status}>
-                            <Typography variant="h5" align="center">Edit</Typography>
-                        </Grid>
-                    </Grid>
+                    </CardActionArea>
                 </Card>
             </div>
         );

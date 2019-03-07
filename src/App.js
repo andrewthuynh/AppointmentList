@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
 import Appointment from './components/Appointment';
+import AppointmentList from './components/AppointmentList';
 
 
 const styles = ({
@@ -32,8 +30,7 @@ class App extends Component {
     const { classes, theme } = this.props;
     return (
       <div className={classes.container}>
-        <Typography variant="h5" gutterBottom>Mar 6, 2019</Typography>
-        <Appointment />
+        <AppointmentList />
       </div>
     );
   }
