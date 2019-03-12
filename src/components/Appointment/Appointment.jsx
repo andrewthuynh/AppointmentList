@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const styles = ({
     card: {
         display: 'flex',
+        backgroundColor: '#66bb6a',
+        marginBottom: 10,
+    },
+    cardReserved: {
+        backgroundColor: '#ef5350',
     },
     details: {
         display: 'flex',
@@ -20,8 +26,11 @@ const styles = ({
     },
     status: {
         display: 'flex',
-
-    }
+    },
+    icon: {
+        margin: 10,
+        fontSize: 32,
+      },
 });
 
 class Appointment extends Component {
@@ -29,14 +38,14 @@ class Appointment extends Component {
     state = {
         startTime: '11:00',
         endTime: '12:00',
-        status: '',
+        available: '',
     };
 
     render() {
-        const { classes, startTime, endTime, status, handleOpen } = this.props;
+        const { classes, startTime, endTime, available, handleOpen } = this.props;
         return (
             <div>
-                <Card className={classes.card}>
+                <Card style={{...styles.card, ...(!available ? styles.cardReserved : {}),}}>
                     <CardActionArea onClick={() => handleOpen}>
                         <Grid container direction="row" justify="space-between" alignItems="center">
                             <Grid item className={classes.details}>
@@ -50,10 +59,10 @@ class Appointment extends Component {
                                 </CardContent>
                             </Grid>
                             <Grid item className={classes.status}>
-                                <Typography variant="h5" align="center">{status}</Typography>
+                                <Typography variant="h5" align="center">{available ? 'Available' : 'Unavailable'}</Typography>
                             </Grid>
                             <Grid item className={classes.status}>
-                                <Typography variant="h5" align="center">Edit</Typography>
+                                {available ? <CheckCircleOutlineIcon className={classes.icon}/> : <ClearIcon className={classes.icon}/>}
                             </Grid>
                         </Grid>
                     </CardActionArea>
