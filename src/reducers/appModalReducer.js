@@ -38,7 +38,7 @@ export default function (state = { appModal: initModal }, action) {
         case RESET_MODAL:
             return {
                 ...state,
-                appModal: { ...state.appModal, startTime: '', endTime: '', name: '', phone: '' }
+                appModal: { ...state.appModal, name: '', phone: '' }
             };
         default:
             return state;
