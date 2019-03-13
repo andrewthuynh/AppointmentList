@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Appointment from '../Appointment'
 import Typography from '@material-ui/core/Typography';
 import AppointmentModal from '../AppointmentModal';
+
+import { connect } from 'react-redux';
 
 const styles = theme => ({
     status: {
@@ -12,45 +14,34 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: 200,
-      }
+    },
+    container: {
+        marginTop: 50,
+        marginLeft: 400,
+        marginRight: 400,
+    },
 });
 
-class AppointmentList extends Component {
+const mapStateToProps = state => {
+    return { appointments: state.appointmentReducer.appointments };
+};
 
-    state = {
-        modalOpen: true,
-        selectedAppointment: undefined,
-    };
+const AppointmentList = (props) => {
 
-    handleOpen = (appointment) => {
-        this.setState({ modalOpen: true });
-    };
+    const { classes, appointments } = props;
 
-    handleClose = () => {
-        this.setState({ modalOpen: false });
-    };
-    handleChange = name => event => {
-        this.setState({ [name]: event.target.value });
-    };
-
-    render() {
-        const { modalOpen } = this.state;
-        const { classes } = this.props;
-        return (
-            <div>
-                <Typography variant="h5" gutterBottom>Today's Appointments</Typography>
-                <Appointment startTime="9:00" endTime="10:00" available handleOpen={this.handleOpen} />
-                <Appointment startTime="10:00" endTime="11:00" available handleOpen={this.handleOpen} />
-                <Appointment startTime="11:00" endTime="12:00" available />
-                <Appointment startTime="12:00" endTime="1:00" available={false} />
-                <Appointment startTime="1:00" endTime="2:00" available />
-                <Appointment startTime="2:00" endTime="3:00" available handleOpen={this.handleOpen} />
-                <Appointment startTime="3:00" endTime="4:00" available />
-                <Appointment startTime="4:00" endTime="5:00" available={false} />
-                <AppointmentModal modalOpen={modalOpen}/>
-            </div>
-        );
-    }
+    return (
+        <div className={classes.container}>
+            <Typography variant="h5" gutterBottom>Today's Appointments</Typography>
+            {
+                appointments.map((appointment) => {
+                    return <Appointment key={appointment.index} appointment={appointment} />
+                })
+            }
+            <AppointmentModal />
+        </div>
+    );
 }
 
-export default withStyles(styles)(AppointmentList);
+const styled = withStyles(styles)(AppointmentList);
+export default connect(mapStateToProps, null)(styled);

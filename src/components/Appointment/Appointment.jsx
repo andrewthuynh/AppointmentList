@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
+
+import {openModal} from '../../actions/modalActions';
+import { connect } from 'react-redux';
 
 const styles = ({
     card: {
@@ -30,46 +33,46 @@ const styles = ({
     icon: {
         margin: 10,
         fontSize: 32,
-      },
+    },
 });
 
-class Appointment extends Component {
-
-    state = {
-        startTime: '11:00',
-        endTime: '12:00',
-        available: '',
+const mapDispatchToProps = (dispatch) =>{
+    return {
+        onOpen: appointment => dispatch(openModal(appointment))
     };
-
-    render() {
-        const { classes, startTime, endTime, available, handleOpen } = this.props;
-        return (
-            <div>
-                <Card style={{...styles.card, ...(!available ? styles.cardReserved : {}),}}>
-                    <CardActionArea onClick={() => handleOpen}>
-                        <Grid container direction="row" justify="space-between" alignItems="center">
-                            <Grid item className={classes.details}>
-                                <CardContent className={classes.content}>
-                                    <Typography variant="h6">
-                                        {startTime} -
-                                    </Typography>
-                                    <Typography variant="h6">
-                                        {endTime}
-                                    </Typography>
-                                </CardContent>
-                            </Grid>
-                            <Grid item className={classes.status}>
-                                <Typography variant="h5" align="center">{available ? 'Available' : 'Unavailable'}</Typography>
-                            </Grid>
-                            <Grid item className={classes.status}>
-                                {available ? <CheckCircleOutlineIcon className={classes.icon}/> : <ClearIcon className={classes.icon}/>}
-                            </Grid>
-                        </Grid>
-                    </CardActionArea>
-                </Card>
-            </div>
-        );
-    }
 }
 
-export default withStyles(styles)(Appointment);
+const Appointment = (props) => {
+
+    const { classes, appointment } = props;
+    return (
+        <div>
+            <Card style={{ ...styles.card, ...(!appointment.available ? styles.cardReserved : {}), }}>
+                <CardActionArea onClick={() => props.onOpen(appointment)}>
+                    <Grid container direction="row" justify="space-between" alignItems="center">
+                        <Grid item className={classes.details}>
+                            <CardContent className={classes.content}>
+                                <Typography variant="h6">
+                                    {appointment.startTime} -
+                                    </Typography>
+                                <Typography variant="h6">
+                                    {appointment.endTime}
+                                </Typography>
+                            </CardContent>
+                        </Grid>
+                        <Grid item className={classes.status}>
+                            <Typography variant="h5" align="center">{appointment.available ? 'Available' : 'Unavailable'}</Typography>
+                        </Grid>
+                        <Grid item className={classes.status}>
+                            {appointment.available ? <CheckCircleOutlineIcon className={classes.icon} /> : <ClearIcon className={classes.icon} />}
+                        </Grid>
+                    </Grid>
+                </CardActionArea>
+            </Card>
+        </div>
+    );
+}
+
+const styled =  withStyles(styles)(Appointment);
+
+export default connect(null, mapDispatchToProps)(styled);
